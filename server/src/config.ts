@@ -104,7 +104,7 @@ export interface ConfigType {
 
 export const Config = {
     host: "172.233.221.218",
-    port: 8000,
+    port: 2600,
 
     regions: {
         dev: "ws://172.233.221.218",
