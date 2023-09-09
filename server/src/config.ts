@@ -103,11 +103,11 @@ export interface ConfigType {
 }
 
 export const Config = {
-    host: "127.0.0.1",
+    host: "172.233.221.218",
     port: 8000,
 
     regions: {
-        dev: "ws://127.0.0.1:8000",
+        dev: "ws://172.233.221.218",
         na: "wss://suroi.io",
         eu: "wss://eu.suroi.io",
         sa: "wss://sa.suroi.io",
