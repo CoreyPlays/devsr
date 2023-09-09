@@ -74,6 +74,23 @@ export class Player extends GameObject {
         this.dirty.health = true;
     }
 
+    static readonly DEFAULT_MAX_SHIELD = 100;
+    private _maxShield = Player.DEFAULT_MAX_SHIELD;
+    get maxShield(): number { return this._maxShield};
+    set maxShield(maxShield: number) {
+        this._maxShield = maxShield;
+        this.dirty.maxMinStats = true;
+        this.shield = this._shield;
+    }
+
+    private _shield = this._maxShield;
+    get shield(): number { return this._shield; }
+    set shield(shield: number) {
+        this._shield = Math.min(shield, this._maxShield);
+
+        this.dirty.shield = true;
+    }
+
     static readonly DEFAULT_MAX_ADRENALINE = 100;
     private _maxAdrenaline = Player.DEFAULT_MAX_ADRENALINE;
     get maxAdrenaline(): number { return this._maxAdrenaline; }
@@ -103,6 +120,7 @@ export class Player extends GameObject {
         // Multiplicative
         maxHealth: 1,
         maxAdrenaline: 1,
+        maxShield: 1,
         baseSpeed: 1,
 
         // Additive
@@ -170,6 +188,7 @@ export class Player extends GameObject {
      */
     readonly dirty = {
         health: true,
+        shield: true,
         maxMinStats: true,
         adrenaline: true,
         activeWeaponIndex: true,

@@ -1,7 +1,7 @@
 import { ReceivingPacket } from "../../types/receivingPacket";
 
 import type { SuroiBitStream } from "../../../../../common/src/utils/suroiBitStream";
-import { COLORS, MINIMAP_SCALE, PIXI_SCALE } from "../../utils/constants";
+import { COLORS, PIXI_SCALE } from "../../utils/constants";
 import { Graphics } from "pixi.js";
 import { ObjectCategory } from "../../../../../common/src/constants";
 import { type ObstacleDefinition } from "../../../../../common/src/definitions/obstacles";
@@ -19,6 +19,7 @@ export class MapPacket extends ReceivingPacket {
         const GRID_WIDTH = width * PIXI_SCALE;
         const GRID_HEIGHT = height * PIXI_SCALE;
         const CELL_SIZE = 320;
+        const WATER_PADDING = CELL_SIZE * 25;
 
         const graphics = new Graphics();
         const minimapTexture = new Graphics();
@@ -31,6 +32,8 @@ export class MapPacket extends ReceivingPacket {
         graphics.zIndex = -10;
 
         minimapTexture.beginFill();
+        minimapTexture.fill.color = COLORS.water.toNumber();
+        minimapTexture.drawRect(-WATER_PADDING, -WATER_PADDING, GRID_WIDTH + WATER_PADDING * 2, GRID_HEIGHT + WATER_PADDING * 2);
         minimapTexture.fill.color = COLORS.beach.toNumber();
         minimapTexture.drawRect(0, 0, GRID_WIDTH, GRID_HEIGHT);
         minimapTexture.fill.color = COLORS.grass.toNumber();
@@ -66,7 +69,7 @@ export class MapPacket extends ReceivingPacket {
 
         game.camera.container.addChild(graphics);
 
-        minimapTexture.scale.set(MINIMAP_SCALE / PIXI_SCALE);
+        minimapTexture.scale.set(1 / PIXI_SCALE);
 
         game.map.objectsContainer.removeChildren();
         game.map.objectsContainer.addChild(minimapTexture);
@@ -123,7 +126,7 @@ export class MapPacket extends ReceivingPacket {
 
             minimapTexture.addChild(image);
 
-            game.map.objectsContainer.addChild(game.map.indicator);
+            game.map.objectsContainer.addChild(game.map.indicator, game.map.gas.graphics, game.map.gasGraphics).sortChildren();
         }
     }
 }
